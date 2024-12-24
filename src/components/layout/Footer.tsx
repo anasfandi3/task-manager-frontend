@@ -3,9 +3,9 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <footer>
+    <div>
       <p>&copy; 2024 My Footer</p>
-    </footer>
+    </div>
   );
 };
 

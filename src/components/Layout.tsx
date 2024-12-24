@@ -1,20 +1,13 @@
 // src/layout/Layout.tsx
 import React from 'react';
 import Header from '@/components/layout/Header.tsx';
-import Footer from '@/components/layout/Footer';
+import Body from '@/components/layout/Body';
 
-type LayoutProps = {
-  children: React.ReactNode;
-};
-
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC = () => {
   return (
-    <div>
+    <div className='d-flex flex-column h-100'>
       <Header />
-      <div>
-        <main>{children}</main>
-      </div>
-      <Footer />
+      <Body />
     </div>
   );
 };

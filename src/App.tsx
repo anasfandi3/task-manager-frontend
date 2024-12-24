@@ -1,14 +1,12 @@
 import Layout from '@/components/Layout.tsx'
+import { BrowserRouter as Router } from 'react-router-dom';
 
 function App() {
-
   return (
     <>
-      <div>
-        <Layout>
-          hihi
-        </Layout>
-      </div>
+      <Router>
+          <Layout /> 
+      </Router>
     </>
   )
 }
