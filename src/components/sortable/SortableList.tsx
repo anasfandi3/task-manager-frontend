@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   DndContext, 
   closestCenter,
@@ -13,18 +13,19 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-
+import { useRecoilState } from 'recoil';
+import { userTasksState } from '@/store/TaskStore';
 import {SortableItem} from '@/components/sortable/SortableItem';
 
 const SortableList: React.FC = () => {
-  const [items, setItems] = useState([1, 2, 3]);
+  const [tasks, setTasks] = useRecoilState(userTasksState);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
+  const sortableItems = tasks.map((task: any) => task.id);
   return (
     <DndContext 
       sensors={sensors}
@@ -32,10 +33,10 @@ const SortableList: React.FC = () => {
       onDragEnd={handleDragEnd}
     >
       <SortableContext 
-        items={items}
+        items={sortableItems}
         strategy={verticalListSortingStrategy}
       >
-        {items.map(id => <SortableItem key={id} id={id} />)}
+        {tasks.map((task: any) => <SortableItem task={task} key={task.id} id={task.id} />)}
       </SortableContext>
     </DndContext>
   );
@@ -44,11 +45,18 @@ const SortableList: React.FC = () => {
     const {active, over} = event;
     
     if (active.id !== over.id) {
-      setItems((items) => {
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
-        
-        return arrayMove(items, oldIndex, newIndex);
+      setTasks((tasks) => {
+        const oldIndex = sortableItems.indexOf(active.id);
+        const newIndex = sortableItems.indexOf(over.id);
+        const newTasks: any = [...tasks];
+        const taskActive = newTasks.find((task: any) => task.id === active.id);
+
+        if (oldIndex !== newIndex) {
+          const updatedTaskActive = { ...taskActive, order: newIndex+1 };
+
+          newTasks.splice(oldIndex, 1, updatedTaskActive);
+        }
+        return arrayMove(newTasks, oldIndex, newIndex);
       });
     }
   }

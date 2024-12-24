@@ -17,8 +17,15 @@ export function SortableItem(props: any) {
   };
   
   return (
-    <div className='border border-1 rounded-1 p-2 border-success mb-2' ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {JSON.stringify(props.id)}
+    <div className={`border border-1 rounded-1 p-2 ${props.task.completed? 'border-success': 'border-danger'}  mb-2`} ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      <div className='d-flex flex-wrap'>
+        <div className='w-100'>
+          {props.task.description}
+        </div>
+        <div className='ms-auto'>
+          {props.task.due_date}
+        </div>
+      </div>
     </div>
   );
 }
