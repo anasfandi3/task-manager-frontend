@@ -7,3 +7,7 @@ body {
 #root > div {
   height: inherit;
 }
+
+.mw-md-400 {
+  min-width: 400px !important;
+}
