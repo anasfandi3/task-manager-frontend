@@ -11,3 +11,6 @@ body {
 .mw-md-400 {
   min-width: 400px !important;
 }
+.cursor-pointer {
+  cursor: pointer;
+}

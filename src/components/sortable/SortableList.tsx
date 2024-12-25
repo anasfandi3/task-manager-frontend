@@ -18,7 +18,7 @@ import {SortableItem} from '@/components/sortable/SortableItem';
 
 const SortableList: React.FC = () => {
   // const [tasks, setTasks] = useRecoilState(userTasksState);
-  const {tasks, setTasks} = useTaskStore();
+  const {tasks, setTasks, isEditMode, setEditMode} = useTaskStore();
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -26,19 +26,38 @@ const SortableList: React.FC = () => {
     })
   );
   const sortableItems = tasks.map((task: any) => task.id);
+  const enableEditMode = () => setEditMode(true)
+  const disableEditMode = () => setEditMode(false)
   return (
-    <DndContext 
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext 
-        items={sortableItems}
-        strategy={verticalListSortingStrategy}
-      >
-        {tasks.map((task: any) => <SortableItem task={task} key={task.id} id={task.id} />)}
-      </SortableContext>
-    </DndContext>
+    <div className="card border-0 bg-dark-subtle">
+      <div className="card-body">
+        <div className='d-flex mb-3 align-items-center'>
+          <div>
+            <button className='btn btn-success btn-sm'>
+              <i className="fa-solid fs-6 fa-plus me-1"></i>
+              New
+            </button>
+          </div>
+          <div className='ms-auto'>
+            <span className='cursor-pointer'>
+              {isEditMode? <i onClick={disableEditMode} className="fa-solid fs-6 fa-x text-danger"></i> : <i onClick={enableEditMode} className="fa-solid fs-6 fa-pen-to-square text-warning"></i>}
+            </span>
+          </div>
+        </div>
+        <DndContext 
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext 
+            items={sortableItems}
+            strategy={verticalListSortingStrategy}
+          >
+            {tasks.map((task: any) => <SortableItem task={task} key={task.id} id={task.id} />)}
+          </SortableContext>
+        </DndContext>
+      </div>
+    </div>
   );
   
   function handleDragEnd(event: any) {
