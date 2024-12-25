@@ -1,13 +1,14 @@
-import Layout from '@/components/Layout.tsx'
+import LayoutRouter from '@/routes/LayoutRouter.tsx'
 import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthProvider } from '@/context/AuthContext';
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <Router>
-          <Layout /> 
+          <LayoutRouter /> 
       </Router>
-    </>
+    </AuthProvider>
   )
 }
 
