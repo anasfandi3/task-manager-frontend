@@ -8,6 +8,7 @@ import About from '@/pages/About.tsx';
 import Login from '@/pages/auth/Login.tsx';
 import Register from '@/pages/auth/Register.tsx';
 import AuthRoute from '@/routes/AuthRoute';
+import AuthPreventRoute from '@/routes/AuthPreventRoute';
 
 
 const LayoutRouter: React.FC = () => {
@@ -22,9 +23,11 @@ const LayoutRouter: React.FC = () => {
       </Route>
 
       {/* public routes */}
-      <Route element={<AuthLayout />}>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+      <Route element={<AuthPreventRoute/>}>
+        <Route element={<AuthLayout />}>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
       </Route>
     </Routes>
   );

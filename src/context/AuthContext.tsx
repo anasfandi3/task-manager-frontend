@@ -1,6 +1,7 @@
 // src/context/AuthContext.tsx
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-
+import useUserStore from '@/store/UserStore'
+import Axios from '@/api/Axios';
 interface AuthContextType {
   isAuthenticated: boolean;
   login: (token: string) => void;
@@ -10,12 +11,33 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+  const {token, setUser} = useUserStore();
   useEffect(() => {
-    // Check for the token in localStorage on initial load
-    setIsAuthenticated(true);
-  }, []);
+    const checkTokenValidity = async () => {
+      if (!token) {
+        setIsAuthenticated(false);
+        return;
+      }
+      try {
+        setIsAuthenticated(true);
+        const response = await Axios.post('validate_login');
+
+        if (response.status === 200) {
+          setIsAuthenticated(true);
+          const user = response.data.user;
+          setUser(user, token);
+        } else {
+          throw new Error('Invalid token');
+        }
+      } catch (error) {
+        console.error('Token validation failed:', error);
+        logout(); // Clear invalid token
+      }
+    }
+    checkTokenValidity();
+  }, [token, setUser]);
 
   const login = (token: string) => {
     localStorage.setItem('authToken', token);

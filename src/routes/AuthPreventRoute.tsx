@@ -3,13 +3,14 @@ import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
-const AuthRoute: React.FC = () => {
+const AuthPreventRoute: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+
+  if (isAuthenticated) {
+    return <Navigate to="/" />;
   }
 
   return <Outlet />;
 };
 
-export default AuthRoute;
+export default AuthPreventRoute;

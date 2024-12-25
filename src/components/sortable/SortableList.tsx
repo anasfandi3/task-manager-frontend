@@ -13,12 +13,12 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { useRecoilState } from 'recoil';
-import { userTasksState } from '@/store/TaskStore';
+import useTaskStore from '@/store/TaskStore';
 import {SortableItem} from '@/components/sortable/SortableItem';
 
 const SortableList: React.FC = () => {
-  const [tasks, setTasks] = useRecoilState(userTasksState);
+  // const [tasks, setTasks] = useRecoilState(userTasksState);
+  const {tasks, setTasks} = useTaskStore();
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -45,19 +45,17 @@ const SortableList: React.FC = () => {
     const {active, over} = event;
     
     if (active.id !== over.id) {
-      setTasks((tasks) => {
-        const oldIndex = sortableItems.indexOf(active.id);
+      const oldIndex = sortableItems.indexOf(active.id);
         const newIndex = sortableItems.indexOf(over.id);
-        const newTasks: any = [...tasks];
+        const newTasks = [...tasks];
         const taskActive = newTasks.find((task: any) => task.id === active.id);
 
-        if (oldIndex !== newIndex) {
+        if (taskActive && oldIndex !== newIndex) {
           const updatedTaskActive = { ...taskActive, order: newIndex+1 };
 
           newTasks.splice(oldIndex, 1, updatedTaskActive);
         }
-        return arrayMove(newTasks, oldIndex, newIndex);
-      });
+      setTasks(arrayMove(newTasks, oldIndex, newIndex));
     }
   }
 };
