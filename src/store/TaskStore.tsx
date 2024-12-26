@@ -19,6 +19,7 @@ type TaskState = {
   addTask: (description: string, due_date: string) => void;
   updateTask: (updatedTask: Task) => void;
   deleteTask: (id: number) => void;
+  saveOrder: (order_array: number[]) => void;
 };
 
 const formatDateToYMD = (date: Date | string): string => {
@@ -32,12 +33,7 @@ const formatDateToYMD = (date: Date | string): string => {
 const useTaskStore = create(
   persist<TaskState>(
     (set) => ({
-      tasks: [
-        {id: 1, description: 'description 1', due_date: 'due_date1', completed: true, order: 1},
-        {id: 2, description: 'description 2', due_date: 'due_date2', completed: true, order: 2},
-        {id: 3, description: 'description 3', due_date: 'due_date3', completed: false, order: 3},
-        {id: 4, description: 'description 4', due_date: 'due_date4', completed: false, order: 4},
-      ],
+      tasks: [],
       isEditMode: false,
       setEditMode: (isEditMode) => set({ isEditMode }),
       fetchTasks: async () => {
@@ -87,6 +83,15 @@ const useTaskStore = create(
           set((state) => ({
             tasks: state.tasks.filter((task) => task.id !== id),
           }))
+        } catch (error) {
+          console.error('Failed to delete task:', error);
+        }
+      },
+      saveOrder: async (order_array) => {
+        try {
+          await Axios.post(`tasks/save_order`, {
+            order_array: order_array
+          });
         } catch (error) {
           console.error('Failed to delete task:', error);
         }

@@ -8,7 +8,7 @@ const SortableItemEditModal: React.FC<Props> = ({id}) => {
     const {updateTask, tasks} = useTaskStore();
     const currTask = tasks.find(task => task.id == parseInt(id));
     const [task, setTask] = useState({...currTask})
-    const handleSave = () => updateTask(task);
+    const handleSave = () => updateTask({...task, completed: currTask?.completed });
     return (
         <Modal id={`sortable_item_edit_${id}`}>
             <div className="modal-header">
@@ -50,10 +50,10 @@ const SortableItemEditModal: React.FC<Props> = ({id}) => {
             </div>
             </div>
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                <button type="button" className="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Cancel
                 </button>
-                <button type="button" className="btn btn-success" onClick={handleSave}>
+                <button type="button" className="btn btn-outline-success" onClick={handleSave}>
                     Save
                 </button>
             </div>

@@ -24,10 +24,10 @@ const SortableItemDeleteModal: React.FC<Props> = ({id}) => {
                 Are you sure you want to delete this task?
             </div>
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                <button type="button" className="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Cancel
                 </button>
-                <button type="button" className="btn btn-danger" onClick={handleDelete}>
+                <button type="button" className="btn btn-outline-danger" onClick={handleDelete}>
                     Delete
                 </button>
             </div>

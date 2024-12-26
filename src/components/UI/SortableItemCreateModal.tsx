@@ -47,10 +47,10 @@ const SortableItemCreateModal: React.FC = () => {
             </div>
             </div>
             <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+                <button type="button" className="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Cancel
                 </button>
-                <button type="button" className="btn btn-success" onClick={handleSave}>
+                <button type="button" className="btn btn-outline-success" onClick={handleSave}>
                     Save
                 </button>
             </div>

@@ -60,7 +60,7 @@ export function SortableItem(props: any) {
               <i className="fa-solid fa-grip fs-6"></i>
           </span>
 
-          <button data-bs-toggle="modal" data-bs-target={`#sortable_item_edit_${props.task.id}`} className="btn btn-sm btn-primary">
+          <button data-bs-toggle="modal" data-bs-target={`#sortable_item_edit_${props.task.id}`} className="btn btn-sm btn-outline-primary">
             <i className="fa-solid fa-pen-to-square me-1"></i> Edit</button>
         </div>
       )}
