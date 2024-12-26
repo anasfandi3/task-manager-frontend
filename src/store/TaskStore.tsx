@@ -16,7 +16,7 @@ type TaskState = {
   setEditMode: (mode: boolean) => void;
   fetchTasks: () => void;
   setTasks: (tasks: Task[]) => void;
-  addTask: (task: Task) => void;
+  addTask: (description: string, due_date: string) => void;
   updateTask: (updatedTask: Task) => void;
   deleteTask: (id: number) => void;
 };
@@ -54,10 +54,20 @@ const useTaskStore = create(
         }
       },
       setTasks: (tasks) => set({ tasks }),
-      addTask: (task) =>
-        set((state) => ({
-          tasks: [...state.tasks, task],
-        })),
+      addTask: async (description, due_date) => {
+        try {
+          const response = await Axios.post('tasks', {
+            description: description,
+            due_date: due_date,
+            completed: false
+          });
+          set((state) => ({
+            tasks: [...state.tasks, response.data.task],
+          }))
+        } catch (error) {
+          console.error('Failed to update task:', error);
+        }
+      },
       updateTask: async (updatedTask) =>
       {
         try {
@@ -71,10 +81,16 @@ const useTaskStore = create(
           console.error('Failed to update task:', error);
         }
       },
-      deleteTask: (id) =>
-        set((state) => ({
-          tasks: state.tasks.filter((task) => task.id !== id),
-        })),
+      deleteTask: async (id) => {
+        try {
+          await Axios.delete(`tasks/${id}`);
+          set((state) => ({
+            tasks: state.tasks.filter((task) => task.id !== id),
+          }))
+        } catch (error) {
+          console.error('Failed to delete task:', error);
+        }
+      }
     }),
     {
       name: 'task-store',

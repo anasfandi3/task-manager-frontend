@@ -1,6 +1,9 @@
 import React from 'react';
-
-const AuthCard = ({title, children}) => {
+type Props = {
+    title: string;
+    children?: React.ReactNode; // Explicitly include children
+  };
+const AuthCard: React.FC<Props> = ({title, children}) => {
     const cardStyle = {
         width: "400px",
         color: "#ffffff", // White text

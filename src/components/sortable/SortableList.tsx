@@ -15,6 +15,7 @@ import {
 } from '@dnd-kit/sortable';
 import useTaskStore from '@/store/TaskStore';
 import {SortableItem} from '@/components/sortable/SortableItem';
+import SortableItemCreateModal from '../UI/SortableItemCreateModal';
 
 const SortableList: React.FC = () => {
   // const [tasks, setTasks] = useRecoilState(userTasksState);
@@ -33,7 +34,7 @@ const SortableList: React.FC = () => {
       <div className="card-body">
         <div className='d-flex mb-3 align-items-center'>
           <div>
-            <button className='btn btn-success btn-sm'>
+            <button data-bs-toggle="modal" data-bs-target='#sortable_item_create' className='btn btn-success btn-sm'>
               <i className="fa-solid fs-6 fa-plus me-1"></i>
               New
             </button>
@@ -53,10 +54,11 @@ const SortableList: React.FC = () => {
             items={sortableItems}
             strategy={verticalListSortingStrategy}
           >
-            {tasks.map((task: any) => <SortableItem task={task} key={task.id} id={task.id} />)}
+            {tasks.length > 0 ? tasks.map((task: any) => <SortableItem task={task} key={task.id} id={task.id} />): 'There are no tasks!'}
           </SortableContext>
         </DndContext>
       </div>
+      <SortableItemCreateModal />
     </div>
   );
   

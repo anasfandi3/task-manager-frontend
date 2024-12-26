@@ -1,6 +1,8 @@
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import useTaskStore from '@/store/TaskStore';
+import SortableItemEditModal from '@/components/UI/SortableItemEditModal.tsx'
+import SortableItemDeleteModal from '@/components/UI/SortableItemDeleteModal.tsx'
 
 export function SortableItem(props: any) {
   const {
@@ -16,7 +18,7 @@ export function SortableItem(props: any) {
     transition,
   };
   const {isEditMode, updateTask} = useTaskStore();
-  
+
   return (
     <div
       ref={setNodeRef}
@@ -29,15 +31,21 @@ export function SortableItem(props: any) {
           <p className="mb-1 text-secondary">{props.task.description}</p>
           <small className="text-muted">Due: {props.task.due_date}</small>
         </div>
-
-        <div className="form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id={`task-done-${props.id}`}
-            checked={props.task.completed}
-            onChange={() => updateTask({...props.task, completed: !props.task.completed})}
-          />
+        <div className='d-flex'>
+          <div className="form-check me-2">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id={`task-done-${props.id}`}
+              checked={props.task.completed}
+              onChange={() => updateTask({...props.task, completed: !props.task.completed})}
+            />
+          </div>
+          <div>
+              <span data-bs-toggle="modal" data-bs-target={`#sortable_item_delete_${props.task.id}`} className='cursor-pointer hover-light'>
+                <i className="fa-solid fa-trash fs-6 text-danger"></i>
+              </span>
+          </div>
         </div>
       </div>
 
@@ -52,10 +60,12 @@ export function SortableItem(props: any) {
               <i className="fa-solid fa-grip fs-6"></i>
           </span>
 
-          <button className="btn btn-sm btn-primary">
-          <i className="fa-solid fa-pen-to-square me-1"></i> Edit</button>
+          <button data-bs-toggle="modal" data-bs-target={`#sortable_item_edit_${props.task.id}`} className="btn btn-sm btn-primary">
+            <i className="fa-solid fa-pen-to-square me-1"></i> Edit</button>
         </div>
       )}
+      <SortableItemEditModal id={props.task.id} />
+      <SortableItemDeleteModal id={props.task.id} />
     </div>
   );
 }
